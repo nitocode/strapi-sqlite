@@ -13,9 +13,17 @@
 module.exports = {
   /**
    * Simple example.
-   * Every monday at 1am.
+   * Everyday at 4am.
    */
-  // '0 1 * * 1': () => {
-  //
-  // }
+  '0 4 * * *': () => {
+    // Fetch data that have the `yourDateAttributeName_lt` lower than the now.
+    const data = await strapi.query('prediction').find({
+      identified: false, _limit: 100000
+    });
+
+    // Delete all entries fetched.
+    data.forEach((entry) => strapi.query('prediction').delete({
+      id: entry.id
+    }));
+  }
 };
